@@ -1,0 +1,147 @@
+Sure! Here’s a self-contained version of the HTML, CSS, and JavaScript that you can use directly in a single HTML file.
+
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Data Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin: 0 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .graph {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .bar {
+            width: 30px;
+            margin: 0 5px;
+            color: #fff;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .price-bar {
+            background-color: #4caf50;
+        }
+
+        .rating-bar {
+            background-color: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product Data Visualization</h1>
+        <form id="productForm">
+            <input type="text" id="productName" placeholder="Product Name" required>
+            <input type="number" id="productPrice" placeholder="Price" step="0.01" required>
+            <input type="number" id="productRating" placeholder="Rating" step="0.1" min="0" max="5" required>
+            <button type="submit">Add Product</button>
+        </form>
+
+        <div class="controls">
+            <button id="sortByPrice">Sort by Price</button>
+            <button id="sortByRating">Sort by Rating</button>
+        </div>
+
+        <div id="priceGraph" class="graph"></div>
+        <div id="ratingGraph" class="graph"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('productForm');
+            const priceGraph = document.getElementById('priceGraph');
+            const ratingGraph = document.getElementById('ratingGraph');
+            const sortByPriceButton = document.getElementById('sortByPrice');
+            const sortByRatingButton = document.getElementById('sortByRating');
+
+            let products = [];
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+
+                const name = document.getElementById('productName').value;
+                const price = parseFloat(document.getElementById('productPrice').value);
+                const rating = parseFloat(document.getElementById('productRating').value);
+
+                products.push({ name, price, rating });
+
+                updateGraphs();
+                form.reset();
+            });
+
+            sortByPriceButton.addEventListener('click', () => {
+                products.sort((a, b) => a.price - b.price);
+                updateGraphs();
+            });
+
+            sortByRatingButton.addEventListener('click', () => {
+                products.sort((a, b) => a.rating - b.rating);
+                updateGraphs();
+            });
+
+            function updateGraphs() {
+                priceGraph.innerHTML = '';
+                ratingGraph.innerHTML = '';
+
+                products.forEach(product => {
+                    const priceBar = document.createElement('div');
+                    priceBar.className = 'bar price-bar';
+                    priceBar.style.height = ${product.price * 10}px;
+                    priceBar.textContent = product.price;
+                    priceGraph.appendChild(priceBar);
+
+                    const ratingBar = document.createElement('div');
+                    ratingBar.className = 'bar rating-bar';
+                    ratingBar.style.height = ${product.rating * 40}px;
+                    ratingBar.textContent = product.rating;
+                    ratingGraph.appendChild(ratingBar);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
